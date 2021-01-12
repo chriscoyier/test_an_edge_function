@@ -12,7 +12,7 @@ export function onRequest(event) {
       let response;
       let post;
 
-      fetchContentJSON().then((data) => {
+      await fetchContentJSON().then((data) => {
         post = data[0];
       });
 
