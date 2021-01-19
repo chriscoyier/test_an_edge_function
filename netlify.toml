@@ -6,4 +6,4 @@
   from = "/"
   to = "/"
   status = 200
-  edge_handler = "addContent"
+  edge_handler = "getBlogPosts"

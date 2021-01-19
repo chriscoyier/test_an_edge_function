@@ -7,14 +7,25 @@ export function onRequest(event) {
       `https://css-tricks.com/wp-json/wp/v2/posts`
     );
     const data = await cloudRequest.json();
-    const post = data[0];
 
     const manipulatedResponse = originalBody.replace(
       `<div id="blog-posts"></div>`,
-      `<h1>
-          <a href="${post.link}">${post.title.rendered}</a>
-        </h1>
-        ${post.excerpt.rendered}`
+      `
+        <h2>
+          <a href="${data[0].link}">${data[0].title.rendered}</a>
+        </h2>
+        ${data[0].excerpt.rendered}
+
+        <h2>
+          <a href="${data[1].link}">${data[1].title.rendered}</a>
+        </h2>
+        ${data[1].excerpt.rendered}
+
+        <h2>
+          <a href="${data[2].link}">${data[2].title.rendered}</a>
+        </h2>
+        ${data[2].excerpt.rendered}
+      `
     );
 
     let response = new Response(manipulatedResponse, {
