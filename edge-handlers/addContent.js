@@ -1,39 +1,28 @@
 export function onRequest(event) {
   event.replaceResponse(async () => {
-    async function fetchContentJSON() {
-      const response = await fetch(
-        `https://css-tricks.com/wp-json/wp/v2/posts`
-      );
-      const data = await response.json();
-      return data;
-    }
+    const originalRequest = await fetch(event.request);
+    const originalBody = await originalRequest.text();
 
-    let response;
-    let post;
+    const cloudRequest = await fetch(
+      `https://css-tricks.com/wp-json/wp/v2/posts`
+    );
+    const data = await cloudRequest.json();
+    const post = data[0];
 
-    await fetchContentJSON().then((data) => {
-      post = data[0];
-    });
-
-    console.log(post);
-
-    response = new Response(
-      `<!doctype html>
-        <head>
-          <meta charset="UTF-8">
-        </head>
-        <h1>
+    const manipulatedResponse = originalBody.replace(
+      `<div id="blog-posts"></div>`,
+      `<h1>
           <a href="${post.link}">${post.title.rendered}</a>
         </h1>
-        ${post.excerpt.rendered}
-        `,
-      {
-        headers: {
-          "content-type": "text/html",
-        },
-        status: 200,
-      }
+        ${post.excerpt.rendered}`
     );
+
+    let response = new Response(manipulatedResponse, {
+      headers: {
+        "content-type": "text/html",
+      },
+      status: 200,
+    });
 
     return response;
   });
