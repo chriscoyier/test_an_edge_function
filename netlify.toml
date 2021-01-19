@@ -3,5 +3,6 @@
 
 [[redirects]]
   from = "/"
+  to = "/"
   status = 200
   edge_handler = "addContent"
