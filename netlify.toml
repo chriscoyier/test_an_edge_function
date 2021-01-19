@@ -1,7 +1,8 @@
 [build]
   command = "exit 0"
+  edge_handlers = "edge-handlers"
 
-[[redirects]]
+[[redirects]] 
   from = "/"
   to = "/"
   status = 200
